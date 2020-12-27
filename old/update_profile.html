@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title> Update Profile </title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/update.css') }}">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<form id="first_form" action="http://127.0.0.1:5000/update?id={{data[0]}}" method="POST">
+						<div class="u_name">
+							<h2>Username: <input type="text" value="{{ data[1] }}" id="u_name1" name="username" required></h2>
+						</div>
+						<div class="pass_word">
+							<h2>Password: <input type="password" value="{{ data[2] }}" id="p_word1" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  title="Must contain Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required></h2>
+						</div>
+						<div class="email_address">
+							<h2>Email: <input type="email" value="{{ data[3] }}" id="e_address" name=email required></h2>
+						</div>
+						<div class="f_name">
+							<h2>First Name: <input type="text" value="{{ data[4] }}" name="first_name"></h2>
+						</div>
+						<div class="l_name">
+							<h2>Last Name: <input type="text" value="{{ data[5] }}" name="last_name"></h2>
+						</div>
+						<div class="dob">
+							<h2>Date of Birth: <input type="text" value="{{ data[6] }}" name="dob"></h2>
+						</div>
+						<div class="address">
+							<h2>Address: <input type="text" value="{{data[7]}}" name="address"></h2>
+						</div>
+						<div class="city">
+							<h2>City: <input type="text" value="{{ data[8] }}" name="city"></h2>
+						</div>
+						<div class="state">
+							<h2>State: <input type="text" value="{{ data[9] }}" name="state"></h2>
+						</div>
+						<div class="phone_no">
+							<h2>Phone Number: <input type="text" value="{{ data[10] }}" name="phone_no"></h2>
+						</div>
+						<div class="submit_class">
+							<input value="Submit" type="submit" class="submit_button">
+						</div>
+                    </form>
+				</div>	
+			</div>
+		</div>
+	</body>

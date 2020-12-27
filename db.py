@@ -1,14 +1,15 @@
 import sqlite3
+from flask_login import UserMixin
 
-class DB():
+class DB(UserMixin):
     def __init__(self):
         self.conn = sqlite3.connect("./user_info.db")
         self.db = self.conn.cursor()
         self.db.execute("""CREATE TABLE IF NOT EXISTS new_personal_info(
             id INTEGER PRIMARY KEY NOT NULL,
-            username text NOT NULL,
+            username text NOT NULL UNIQUE,
             password text NOT NULL,
-            email text NOT NULL,
+            email text NOT NULL UNIQUE,
             first_name text NOT NULL,
             last_name text NOT NULL,
             dob text,
@@ -18,7 +19,7 @@ class DB():
             phone_number text
         )""")
 
-    def CreateProfile(self, username, password, email, first_name, last_name, dob, address, city, state, phone_number):
+    def CreateProfile(self, username, password, email, first_name, last_name, dob, address, city, state, phone_no):
         self.db.execute("INSERT INTO new_personal_info VALUES(:id, :username, :password, :email, :first_name, :last_name, :dob, :address, :city, :state, :phone_number)", {
             'id': None,
             'username': username,
@@ -30,7 +31,7 @@ class DB():
             'address': address,
             'city': city,
             'state': state,
-            'phone_number': phone_number
+            'phone_number': phone_no
         })
         self.conn.commit()
         
@@ -46,8 +47,8 @@ class DB():
         self.db.execute("UPDATE new_personal_info SET " +set_update+" = (?) WHERE id = (?)", (set_value, yid))
         self.conn.commit()
 
-    def UpdateAll(self, yid, username, password, email, first_name2, last_name2, dob2, address2, city2, state2, phone_no2):
-        self.db.execute("UPDATE new_personal_info SET username = (?), password = (?), email = (?), first_name = (?), last_name = (?), dob = (?), address = (?), city = (?), state = (?), phone_number = (?) WHERE id = (?)", (username, password, email, first_name2, last_name2, dob2, address2, city2, state2, phone_no2, yid))
+    def UpdateAll(self, yid, username, email, first_name2, last_name2, dob2, address2, city2, state2, phone_no2):
+        self.db.execute("UPDATE new_personal_info SET username = (?), email = (?), first_name = (?), last_name = (?), dob = (?), address = (?), city = (?), state = (?), phone_number = (?) WHERE id = (?)", (username, email, first_name2, last_name2, dob2, address2, city2, state2, phone_no2, yid))
         self.conn.commit()
 
     def DeleteProfileByName(self, first_name1, last_name1):
@@ -68,6 +69,10 @@ class DB():
 
     def GetByUsername(self, username):
         self.db.execute("SELECT * FROM new_personal_info WHERE username = (?)", (username,))
+        return self.db.fetchone()
+
+    def GetByEmail(self, email):
+        self.db.execute("SELECT * FROM new_personal_info WHERE email = (?)", (email,))
         return self.db.fetchone()
 
     def Close(self):
